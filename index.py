@@ -1,6 +1,10 @@
 from flask import Flask
 from flask import send_file
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 app = Flask(__name__)
+xray_recorder.configure(service='xray-service')
+XRayMiddleware(app, xray_recorder)
 @app.route('/summer')
 def summer():
     return "Summer App"
